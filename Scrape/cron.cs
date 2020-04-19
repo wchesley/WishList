@@ -2,6 +2,7 @@ using System;
 using Quartz; 
 using Quartz.Impl;
 using System.Threading.Tasks; 
+using System.Collections.Specialized;
 
 namespace WishList
 {
@@ -9,13 +10,19 @@ namespace WishList
     Schedules jobs to be run every 24hrs at midnight: 
     utalizes Quartz for scheduling, this class configures and runs quartz
     largly taken from: http://www.mikesdotnetting.com/Article/254/Scheduled-Tasks-In-ASP.NET-With-Quartz.Net
+    && Quartz Docs: https://www.quartz-scheduler.net/documentation/quartz-3.x/tutorial/using-quartz.html 
     */
     public class JobScheduler
     {
-        public static void Start()
+        public static async void Start()
         {
-            IScheduler scheduler = (IScheduler)StdSchedulerFactory.GetDefaultScheduler();
-            scheduler.Start(); 
+            NameValueCollection props = new NameValueCollection
+            {
+                {"quartz.serializer.type", "binary"}
+            };
+            StdSchedulerFactory factor = new StdSchedulerFactory(props); 
+            IScheduler scheduler = await factor.GetScheduler(); 
+            await scheduler.Start(); 
 
             //Tells quartz which job to run: in this case it will be scrape.Execute()
             IJobDetail job = JobBuilder.Create<scrape>().Build();
@@ -30,7 +37,8 @@ namespace WishList
                     )
                 .Build();
             
-            scheduler.ScheduleJob(job, trigger); 
+            await scheduler.ScheduleJob(job, trigger);
+            
         }
     }
 }
