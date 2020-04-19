@@ -1,0 +1,28 @@
+@page
+@model Create
+@{
+    ViewData["Title"] = "Add Product";
+}
+<div class="container">
+    <form method="POST">
+        <div class="form-group">
+                <label asp-for="url" class="control-label"></label>
+                <input asp-for="url" class="form-control" />
+                <span asp-validation-for="url" class="text-danger"></span>
+
+                <label asp-for="priceId" class="control-label"></label>
+                <input asp-for="priceId" class="form-control" />
+                <span asp-validation-for="priceId" class="text-danger"></span>
+
+                <label asp-for="productNameId" class="control-label"></label>
+                <input asp-for="productNameId" class="form-control" />
+                <span asp-validation-for="productNameId" class="text-danger"></span>
+        </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
