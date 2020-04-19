@@ -51,10 +51,13 @@ namespace WishList
             }
             Console.WriteLine();
         }
-        public Task Execute(IJobExecutionContext context)
+        public async Task Execute(IJobExecutionContext context)
         {
+            
+            _logger.LogInformation($"Begin Scheduled Task: {DateTime.Now.ToString()}");
             //expensive operation, we only want to do this once:
             var browser = createBrowser(); 
+            
             var products = _context.ProductMeta.ToList();
             foreach(var product in products)
             {
@@ -65,7 +68,7 @@ namespace WishList
             //dispose of browser to conserve resources: 
             browser.Close();
             //have to return something? 
-            return null;
+
         }
     }
 }
