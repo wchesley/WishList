@@ -9,7 +9,7 @@ using WishList;
 namespace WishList.Migrations
 {
     [DbContext(typeof(ProductContext))]
-    [Migration("20200419192656_initialcreate")]
+    [Migration("20200420013625_initialcreate")]
     partial class initialcreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,13 +24,13 @@ namespace WishList.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("ProductMetaId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("name")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("price")
+                    b.Property<string>("price")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("productMetaId")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("timeRetreived")
@@ -38,7 +38,7 @@ namespace WishList.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductMetaId");
+                    b.HasIndex("productMetaId");
 
                     b.ToTable("Product");
                 });
@@ -65,9 +65,9 @@ namespace WishList.Migrations
 
             modelBuilder.Entity("WishList.Product", b =>
                 {
-                    b.HasOne("WishList.ProductMeta", null)
-                        .WithMany("product")
-                        .HasForeignKey("ProductMetaId");
+                    b.HasOne("WishList.ProductMeta", "productMeta")
+                        .WithMany("products")
+                        .HasForeignKey("productMetaId");
                 });
 #pragma warning restore 612, 618
         }

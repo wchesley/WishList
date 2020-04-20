@@ -29,25 +29,25 @@ namespace WishList.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     timeRetreived = table.Column<DateTime>(nullable: false),
-                    price = table.Column<int>(nullable: false),
+                    price = table.Column<string>(nullable: true),
                     name = table.Column<string>(nullable: true),
-                    ProductMetaId = table.Column<int>(nullable: true)
+                    productMetaId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Product", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Product_ProductMeta_ProductMetaId",
-                        column: x => x.ProductMetaId,
+                        name: "FK_Product_ProductMeta_productMetaId",
+                        column: x => x.productMetaId,
                         principalTable: "ProductMeta",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Product_ProductMetaId",
+                name: "IX_Product_productMetaId",
                 table: "Product",
-                column: "ProductMetaId");
+                column: "productMetaId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
