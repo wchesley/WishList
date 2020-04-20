@@ -1,0 +1,31 @@
+@page
+@model SavedProducts
+@{
+    ViewData["Title"] = "Saved Products";
+}
+<div class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Price</th>
+                <th scope="col">URL:</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.SavedProductsList)
+            {
+                <th scope="row">@item.Id</th>
+                <th>@item.NameHtmlId</th>
+                <th>@item.PriceHtmlId</th>
+                <th>@item.ProductUrl</th>
+            }
+        </tbody>
+    </table>
+</div>
+<form method="POST">
+    <div class="form-group">
+        <input type="submit" value="Create" class="btn btn-primary" />
+    </div>
+</form>
