@@ -13,6 +13,7 @@ namespace WishList.Pages
         private readonly ProductContext _context;
         private readonly ILogger<SavedProducts> _logger;
         public List<ProductMeta> SavedProductsList {get; set;}
+        private readonly ILogger<scrape> scrapeLogger; 
 
         public SavedProducts(ILogger<SavedProducts> logger, ProductContext context)
         {
@@ -26,7 +27,8 @@ namespace WishList.Pages
         }
         public void OnPost()
         {
-            scrape scraper = new scrape(_context);
+            SavedProductsList = _context.ProductMeta.ToList();
+            scrape scraper = new scrape(_context, scrapeLogger);
             scraper.TestScrape();
             RedirectToPage("Index"); 
         }
