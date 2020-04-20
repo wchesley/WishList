@@ -21,10 +21,12 @@
         <tbody>
             @foreach (var item in Model.ProductsList)
             {
-                <th scope="row">@item.Id</th>
-                <th>@item.name</th>
-                <th>@item.price</th>
-                <th>@item.timeRetreived.ToString()</th>
+                <tr>
+                    <th scope="row">@item.Id</th>
+                    <th>@item.name</th>
+                    <th>@item.price</th>
+                    <th>@item.timeRetreived.ToString()</th>
+                </tr>
             }
         </tbody>
     </table>
