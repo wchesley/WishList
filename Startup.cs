@@ -13,10 +13,9 @@ using Microsoft.EntityFrameworkCore;
 namespace WishList
 {
     public class Startup
-    {
+    {   
         public Startup(IConfiguration configuration)
         {
-            JobScheduler.Start();
             Configuration = configuration;
         }
 
@@ -28,6 +27,7 @@ namespace WishList
             services.AddRazorPages();
             services.AddDbContext<ProductContext>(options =>
                 options.UseSqlite(Configuration.GetConnectionString("ProductContext")));
+                JobScheduler.Start();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
