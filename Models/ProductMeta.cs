@@ -9,6 +9,6 @@ namespace WishList
         public string ProductUrl {get; set;}
         public string PriceHtmlId {get; set;}
         public string NameHtmlId {get; set;}
-        public ICollection<Product> product {get; set;}
+        public List<Product> products {get; set;} = new List<Product>();
     }
 }
