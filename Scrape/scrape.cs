@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.IO; 
 using OpenQA.Selenium.Chrome;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -15,6 +16,10 @@ namespace WishList
         {
             _context = context;
             _logger = logger;
+        }
+        public scrape(ProductContext context)
+        {
+            _context = context;
         }
         public ChromeDriver createBrowser()
         {
@@ -69,6 +74,17 @@ namespace WishList
             browser.Close();
             //have to return something? 
 
+        }
+        public void TestScrape()
+        {
+            var browser = createBrowser();
+            var products = _context.ProductMeta.ToList();
+            foreach(var item in products)
+            {
+                getPrice(item.ProductUrl, item.NameHtmlId, item.PriceHtmlId, browser, item.Id);
+            }
+            _context.SaveChanges();
+            browser.Close();
         }
     }
 }
