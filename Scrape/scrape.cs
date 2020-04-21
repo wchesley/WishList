@@ -1,14 +1,13 @@
 using System;
 using System.Linq;
-using System.IO; 
 using OpenQA.Selenium.Chrome;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using Quartz;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WishList
 {
-    class scrape : IJob
+    public class scrape
     {
         private readonly ProductContext _context;
         private readonly ILogger<scrape> _logger;
@@ -17,9 +16,8 @@ namespace WishList
             _context = context;
             _logger = logger;
         }
-        public scrape(ProductContext context)
+        public scrape()
         {
-            _context = context;
         }
         public ChromeDriver createBrowser()
         {
