@@ -16,10 +16,12 @@
         <tbody>
             @foreach (var item in Model.SavedProductsList)
             {
-                <th scope="row">@item.Id</th>
-                <th>@item.NameHtmlId</th>
-                <th>@item.PriceHtmlId</th>
-                <th>@item.ProductUrl</th>
+                <tr>
+                    <th scope="row">@item.Id</th>
+                    <th>@item.NameHtmlId</th>
+                    <th>@item.PriceHtmlId</th>
+                    <th>@item.ProductUrl</th>
+                </tr>
             }
         </tbody>
     </table>
