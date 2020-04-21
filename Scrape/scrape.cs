@@ -22,7 +22,7 @@ namespace WishList
         public ChromeDriver createBrowser()
         {
             var options = new ChromeOptions();
-            options.AddArguments("w0hitelisted-ips=''", "headless");
+            options.AddArguments("whitelisted-ips=''", "headless");
             ChromeDriver browser = new ChromeDriver("./", options);
             //give pages 30 seconds to respond before timeing out: 
             browser.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(30);
