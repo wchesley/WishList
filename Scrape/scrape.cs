@@ -30,23 +30,57 @@ namespace WishList
         }
         public void getPrice(string url, string titleId, string priceId, ChromeDriver browser, int productId)
         {
+            string Price; 
+            string title; 
             //the web can be a tricky, unreliable place, best to wrap this in a try/catch block: 
             try
             {
                 browser.Navigate().GoToUrl(url);
 
                 var timeStamp = DateTime.Now;
-                var Price = browser.FindElementById(priceId).Text;
-                var title = browser.FindElementById(titleId).Text;
+                try
+                {
+                    Price = browser.FindElementById(priceId).Text;
+                }
+                catch(Exception e1)
+                {
+                   try
+                   {
+                       Console.WriteLine("No element by id, trying css class: \n" + e1.ToString());
+                       Price = browser.FindElementByClassName(priceId).Text;
+                   }
+                   catch(Exception e2)
+                   {
+                    Console.WriteLine("Unable to retreive price by id or css: " + priceId +"\n"+e2.ToString());
+                    Price = "Error";
+                   }
+                }
+                try
+                {
+                    title = browser.FindElementById(titleId).Text;
+                }
+                catch(Exception e1)
+                {
+                    try{
+                    Console.WriteLine("No element by id, trying css class: \n" + e1.ToString());
+                    title = browser.FindElementByClassName(titleId).Text;
+                    }
+                    catch(Exception e2)
+                    {
+                        Console.WriteLine("Unable to retreive title by id or css: " + titleId +"\n"+e2.ToString());
+                        title = "Error";
+                    }
+                }
+                
                 Console.WriteLine($"Object Found:\nName:{title}\nPrice:{Price}\nURL:{url}\nTime:{timeStamp.ToString()}");
-                var thing = Program.globalContext.ProductMeta.Find(productId);
+                var ParentProduct = Program.globalContext.ProductMeta.Find(productId);
                 var foundProduct = new Product
                 {
                     timeRetreived = timeStamp,
                     price = Price,
                     name = title,
                 };
-                thing.products.Add(foundProduct);
+                ParentProduct.products.Add(foundProduct);                
             }
             catch (Exception e)
             {
