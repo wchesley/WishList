@@ -26,11 +26,11 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">
-                    <a asp-page="./Index" asp-route-sortOrder="@Model.NameSort">Name</a>
+                    <a asp-page="./Index" asp-route-sortOrder="@Model.NameSort" asp-route-currentFilter="@Model.searchFilter">Name</a>
                 </th>
                 <th scope="col">Price</th> 
                 <th scope="col">
-                    <a asp-page="./Index" asp-route-sortOrder="@Model.DateSort">Time Retreived</a>
+                    <a asp-page="./Index" asp-route-sortOrder="@Model.DateSort" asp-route-currentFilter="@Model.searchFilter">Time Retreived</a>
                 </th>
             </tr>
         </thead>
@@ -46,4 +46,18 @@
             }
         </tbody>
     </table>
+    @{
+        var prevDisabled = !Model.ProductsList.HasPreviousPage ? "disabled" :"";
+        var nextDisabled = !Model.ProductsList.HasNextPage ? "disabled":""; 
+    }
+    <a asp-page="./Index" asp-route-sortOrder="@Model.CurrentSort" 
+        asp-route-pageIndex="@(Model.ProductsList.pageIndex - 1)" 
+        asp-route-searchFilter="@Model.searchFilter"
+        class="btn btn-primary @prevDisabled">Previous
+    </a>
+    <a asp-page="./Index" asp-route-sortOrder="@Model.CurrentSort" 
+        asp-route-pageIndex="@(Model.ProductsList.pageIndex + 1)" 
+        asp-route-searchFilter="@Model.searchFilter"
+        class="btn btn-primary @nextDisabled">Next
+    </a>
 </div>
