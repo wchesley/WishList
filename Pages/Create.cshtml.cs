@@ -53,7 +53,7 @@ namespace WishList.Pages
             {
                 _logger.LogWarning(e, "Error Saving to database:"); 
             }
-            RedirectToPage("Index"); 
+            RedirectToPage("./SavedProducts"); 
         }
     }
 }
