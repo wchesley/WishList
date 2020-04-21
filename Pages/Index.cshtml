@@ -1,21 +1,37 @@
 ﻿@page
-@model IndexModel
 @{
+@model IndexModel
     ViewData["Title"] = "Home page";
 }
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <p>View your <a asp-protocol="SavedProducts">saved products</a>.</p>
+</div>
+<div class="container">
+    <form asp-page="./Index" method="GET">
+        <div class="form-actions no-color">
+            <p>
+                Search:
+                <input type="text" name="searchString" value="@Model.searchFilter"/>
+                <input type="submit" value="Search" class="btn btn-primary"/> |
+                <a asp-page="./Index">Back to full list</a>
+            </p>
+        </div>
+    </form>
 </div>
 <div class="container">
     <table class="table">
         <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Name</th>
-                <th scope="col">Price</th>
-                <th scope="col">Time Retreived:</th>
+                <th scope="col">
+                    <a asp-page="./Index" asp-route-sortOrder="@Model.NameSort">Name</a>
+                </th>
+                <th scope="col">Price</th> 
+                <th scope="col">
+                    <a asp-page="./Index" asp-route-sortOrder="@Model.DateSort">Time Retreived</a>
+                </th>
             </tr>
         </thead>
         <tbody>
