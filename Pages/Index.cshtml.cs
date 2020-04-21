@@ -13,7 +13,7 @@ namespace WishList.Pages
     {
         private readonly ILogger<IndexModel> _logger;
         private readonly ProductContext _context;
-        public IList<Product> ProductsList {get; set;}
+        public Paginate<Product> ProductsList {get; set;}
         public string NameSort {get; set;}
         public string DateSort {get; set;}
         public string PriceOrder {get; set;}
@@ -26,11 +26,22 @@ namespace WishList.Pages
             _context = context;
         }
 
-        public async Task OnGetAsync(string sortOrder, string searchString)
+        public async Task OnGetAsync(string sortOrder, 
+            string currentFilter, string searchString, int? pageIndex)
         {
+            CurrentSort = sortOrder; 
             NameSort = String.IsNullOrEmpty(sortOrder) ? "name" : "name_desc";
             DateSort = sortOrder == "Date" ? "date_desc" : "Date";
             PriceOrder = sortOrder == "price" ? "price_desc" : "price";
+
+            if (searchString != null)
+            {
+                pageIndex = 1; 
+            }
+            else
+            {
+                searchString = currentFilter; 
+            }
 
             searchFilter = searchString; 
 
@@ -50,7 +61,7 @@ namespace WishList.Pages
                 products = products.OrderBy(p => p.timeRetreived);
                 break;
                 case "date_desc":
-                products = products.OrderByDescending(p => p.timeRetreived);
+                products = products.OrderBy(p => p.timeRetreived);
                 break;
                 case "name_desc":
                 products = products.OrderBy(p => p.name);
@@ -62,10 +73,11 @@ namespace WishList.Pages
                 products = products.OrderByDescending(p => p.price);
                 break;
                 default:
-                products = products.OrderBy(p => p.timeRetreived);
+                products = products.OrderByDescending(p => p.timeRetreived);
                 break;
             }
-            ProductsList = await products.AsNoTracking().ToListAsync();   
+            int pageSize = 10; 
+            ProductsList = await Paginate<Product>.CreateAsync(products.AsNoTracking(), pageIndex ?? 1, pageSize);   
         }
     }
 }
