@@ -36,7 +36,7 @@ namespace WishList.Pages
             _context = context; 
         }
 
-        public void OnPost()
+        public async Task<IActionResult> OnPostAsync()
         {
             var productMeta = new ProductMeta
             {
@@ -47,13 +47,13 @@ namespace WishList.Pages
             try
             {
                 _context.ProductMeta.Add(productMeta);
-                _context.SaveChanges(); 
+                await _context.SaveChangesAsync(); 
             }
             catch(Exception e)
             {
                 _logger.LogWarning(e, "Error Saving to database:"); 
             }
-            RedirectToPage("./SavedProducts"); 
+            return RedirectToPage("SavedProducts");
         }
     }
 }
