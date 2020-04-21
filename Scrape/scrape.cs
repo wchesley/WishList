@@ -39,16 +39,16 @@ namespace WishList
 
                 var timeStamp = DateTime.Now;
                 var Price = browser.FindElementById(priceId).Text;
-                var title = browser.FindElementById(titleId).Text; 
+                var title = browser.FindElementById(titleId).Text;
                 Console.WriteLine($"Object Found:\nName:{title}\nPrice:{Price}\nURL:{url}\nTime:{timeStamp.ToString()}");
-                var thing = _context.ProductMeta.Find(productId);
-                var foundProduct = new Product {
+                var thing = Program.globalContext.ProductMeta.Find(productId);
+                var foundProduct = new Product
+                {
                     timeRetreived = timeStamp,
-                    price = Price, 
+                    price = Price,
                     name = title,
                 };
-                thing.products.Add(foundProduct); 
-                _context.SaveChanges();
+                thing.products.Add(foundProduct);
             }
             catch (Exception e)
             {
