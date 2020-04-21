@@ -56,25 +56,7 @@ namespace WishList
             }
             Console.WriteLine();
         }
-        public async Task Execute(IJobExecutionContext context)
-        {
-            
-            _logger.LogInformation($"Begin Scheduled Task: {DateTime.Now.ToString()}");
-            //expensive operation, we only want to do this once:
-            var browser = createBrowser(); 
-            
-            var products = _context.ProductMeta.ToList();
-            foreach(var product in products)
-            {
-                getPrice(product.ProductUrl, product.NameHtmlId, product.PriceHtmlId, browser, product.Id); 
-            }
-            //save changes in one go? 
-            _context.SaveChanges(); 
-            //dispose of browser to conserve resources: 
-            browser.Close();
-            //have to return something? 
 
-        }
         public IActionResult Scrape()
         {
             var services = Program.globalContext; 
