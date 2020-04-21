@@ -25,7 +25,7 @@ namespace WishList
             await scheduler.Start(); 
 
             //Tells quartz which job to run: in this case it will be scrape.Execute()
-            IJobDetail job = JobBuilder.Create<scrape>().Build();
+            IJobDetail job = JobBuilder.Create<scrapeJob>().Build();
 
             //schedule for everyday at midnight: 
             ITrigger trigger = TriggerBuilder.Create()
