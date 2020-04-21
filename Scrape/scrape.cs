@@ -75,16 +75,27 @@ namespace WishList
             //have to return something? 
 
         }
-        public void TestScrape()
+        public IActionResult Scrape()
         {
+            var services = Program.globalContext; 
             var browser = createBrowser();
-            var products = _context.ProductMeta.ToList();
-            foreach(var item in products)
+            Console.WriteLine("Init Browser..."); 
+            try
             {
-                getPrice(item.ProductUrl, item.NameHtmlId, item.PriceHtmlId, browser, item.Id);
+                var products = services.ProductMeta.ToList();
+                foreach (var item in products)
+                {
+                    Console.WriteLine($"Object Found:\nName:{item.NameHtmlId}\nPrice:{item.PriceHtmlId}\nURL:{item.ProductUrl}");
+                    getPrice(item.ProductUrl, item.NameHtmlId, item.PriceHtmlId, browser, item.Id);
+                }
             }
-            _context.SaveChanges();
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+            services.SaveChanges();
             browser.Close();
+            return null; 
         }
     }
 }
