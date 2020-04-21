@@ -89,7 +89,7 @@ namespace WishList
             Console.WriteLine();
         }
 
-        public IActionResult Scrape()
+        public Action Scrape()
         {
             var services = Program.globalContext; 
             var browser = createBrowser();
