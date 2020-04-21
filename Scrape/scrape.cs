@@ -72,6 +72,7 @@ namespace WishList
             catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
+                browser.Close();
             }
             services.SaveChanges();
             browser.Close();
