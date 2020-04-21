@@ -12,7 +12,7 @@ namespace WishList
         { 
             Console.Out.WriteLine("Begin Scheduled Job...");
             var scraper = new scrape();
-            scraper.Scrape();   
+            await Task.Run(scraper.Scrape());   
         }
     }
 }
