@@ -32,10 +32,19 @@
             @foreach (var item in Model.SavedProductsList)
             {
                 <tr>
-                    <th scope="row">@item.Id</th>
-                    <th>@item.NameHtmlId</th>
-                    <th>@item.PriceHtmlId</th>
-                    <th>@item.ProductUrl</th>
+                    <td scope="row">@item.Id</td>
+                    <td>@item.NameHtmlId</td>
+                    <td>@item.PriceHtmlId</td>
+                    <td>
+                        <a href="@item.ProductUrl">@item.ProductUrl</a>
+                    </td>
+                    <td>
+                        <a asp-page="./ProductPage" asp-route-id="@item.Id" class="btn bnt-warning">Details</a>
+                        <div class="delete-section" >
+                            <a class="delete-link btn btn-danger" href="@Url.Action("Delete", new {id = item.Id})">Delete</a>
+                            <div class="btn btn-primary delete-confirm" style="display:none" data-delete-id="@item.Id">Confirm Delete</div>
+                        </div>
+                    </td>
                 </tr>
             }
         </tbody>
@@ -55,3 +64,70 @@
         class="btn btn-primary @nextDisabled">Next
     </a>
 </div>
+
+<!-- 
+    code below is thanks to: https://www.davepaquette.com/archive/2014/02/24/simple-delete-confirmation-in-asp-net-mvc.aspx
+    works wonders!
+-->
+@section scripts{
+    <script type="text/javascript">
+    $(function () {
+        $("a.delete-link").click(function () {
+            var deleteLink = $(this);
+            deleteLink.hide();
+            var confirmButton = deleteLink.siblings(".delete-confirm");
+            confirmButton.show();
+
+            var cancelDelete =  function () {
+                removeEvents();
+                showDeleteLink();
+            };
+
+            var deleteItem = function () {
+                removeEvents();
+                confirmButton.hide();
+                $.post(
+                    '@Url.Action("Delete")',
+                    AddAntiForgeryToken({ id: confirmButton.attr('data-delete-id') }))
+                   .done(function () {
+                       var parentRow = deleteLink.parents("tr:first");
+                       parentRow.fadeOut('fast', function () {
+                           parentRow.remove();
+                       });
+                   }).fail(function (data) {
+                       alert("error");
+                   });
+                return false;
+            };
+
+            var removeEvents = function () {
+                confirmButton.off("click", deleteItem);
+                $(document).on("click", cancelDelete);
+                $(document).off("keypress", onKeyPress);
+            };
+
+            var showDeleteLink = function () {
+                confirmButton.hide();
+                deleteLink.show();
+            };
+
+            var onKeyPress = function (e) {
+                //Cancel if escape key pressed
+                if (e.which == 27) {
+                    cancelDelete();
+                }
+            };
+
+            confirmButton.on("click", deleteItem);
+            $(document).on("click", cancelDelete);
+            $(document).on("keypress", onKeyPress);
+
+            return false;
+        });
+         AddAntiForgeryToken = function (data) {
+            data.__RequestVerificationToken = $('input[name=__RequestVerificationToken]').val();
+            return data;
+        };
+    });
+    </script>
+}

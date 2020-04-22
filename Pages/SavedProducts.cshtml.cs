@@ -59,12 +59,35 @@ namespace WishList.Pages
             int pageSize = 10;
             SavedProductsList = await Paginate<ProductMeta>.CreateAsync(productMetas.AsNoTracking(), pageIndex ?? 1, pageSize);
         }
-        public void OnPost()
+        public async Task<IActionResult> OnPostAsync(int? id)
         {
-            SavedProductsList = _context.ProductMeta.ToList();
-            scrape scraper = new scrape();
-            scraper.Scrape();
-            RedirectToPage("./Index"); 
+            // List<ProductMeta>SavedProductsList = await _context.ProductMeta.ToListAsync();
+            // scrape scraper = new scrape();
+            // scraper.Scrape();
+            // RedirectToPage("./Index");
+            if (id == null)
+            {
+                return NotFound();
+            }
+            ProductMeta itemToDelete = await _context.ProductMeta.Include(p => p.products)
+                .AsNoTracking().FirstOrDefaultAsync(pd => pd.Id == id);
+            var scrapedItems = itemToDelete.products; 
+            if (itemToDelete == null)
+            {
+                return NotFound();
+            }
+            try
+            {
+                _context.ProductMeta.Remove(itemToDelete);
+                _context.RemoveRange(scrapedItems);
+                await _context.SaveChangesAsync();
+                _logger.LogInformation($"Obj Deleted from Database:\nID:{itemToDelete.Id}\nURL:{itemToDelete.ProductUrl}");
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Error Deleting obj");
+            }
+            return RedirectToPage("./SavedProducts");
         }
     }
 }
