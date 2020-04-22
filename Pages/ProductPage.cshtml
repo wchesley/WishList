@@ -1,0 +1,36 @@
+@page
+@model ProductPage
+@{
+    ViewData["Title"] = "Product Details";
+}
+<h1>Product Details</h1>
+
+<div class="container">
+    <dl class="row">
+        <dd class="col-sm-2">@Model.ProductDetails.Id</dd>
+        <dt class="col-sm-2"><a href="@Model.ProductDetails.ProductUrl">URL</a></dt>
+        <dd class="col-sm-2">@Model.ProductDetails.NameHtmlId</dd>
+        <dt class="col-sm-2">@Model.ProductDetails.PriceHtmlId</dt>
+        <dd class="col-sm-10">
+            <table class="table">
+                <tr>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Time Retreived</th>
+                </tr>
+                @foreach (var item in Model.ProductDetails.products)
+                {
+                    <tr>
+                        <td>@item.name</td>
+                        <td>@item.price</td>
+                        <td>@item.timeRetreived.ToString()</td>
+                    </tr>
+                }
+            </table>
+        </dd>
+    </dl>
+</div>
+<div class="container center col-md-4">
+    <a asp-page="./Edit" asp-route-id="@Model.ProductDetails.Id">Edit</a> |
+    <a asp-page="./SavedProducts">Back to List</a>
+</div>
