@@ -4,11 +4,26 @@
     ViewData["Title"] = "Saved Products";
 }
 <div class="container">
+    @Html.AntiForgeryToken()
+    <form asp-page="SavedProducts" method="GET">
+        <div class="form-actions no-color">
+            <p>
+                Search:
+                <input type="text" name="searchString" value="@Model.searchFilter"/>
+                <input type="submit" value="Search" class="btn btn-primary"/> |
+                <a asp-page="SavedProducts">Back to full list</a>
+            </p>
+        </div>
+    </form>
+</div>
+<div class="container">
     <table class="table">
         <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Name</th>
+                <th scope="col">
+                    <a asp-page="./SavedProducts" asp-route-sortOrder="@Model.NameSort" asp-route-currentFilter="@Model.searchFilter">Name</a>
+                </th>
                 <th scope="col">Price</th>
                 <th scope="col">URL:</th>
             </tr>
@@ -25,9 +40,18 @@
             }
         </tbody>
     </table>
+    @{
+        var prevDisabled = !Model.SavedProductsList.HasPreviousPage ? "disabled" :"";
+        var nextDisabled = !Model.SavedProductsList.HasNextPage ? "disabled":""; 
+    }
+    <a asp-page="./SavedProducts" asp-route-sortOrder="@Model.CurrentSort" 
+        asp-route-pageIndex="@(Model.SavedProductsList.pageIndex - 1)" 
+        asp-route-searchFilter="@Model.searchFilter"
+        class="btn btn-primary @prevDisabled">Previous
+    </a>
+    <a asp-page="./SavedProducts" asp-route-sortOrder="@Model.CurrentSort" 
+        asp-route-pageIndex="@(Model.SavedProductsList.pageIndex + 1)" 
+        asp-route-searchFilter="@Model.searchFilter"
+        class="btn btn-primary @nextDisabled">Next
+    </a>
 </div>
-<form method="POST">
-    <div class="form-group">
-        <input type="submit" value="Create" class="btn btn-primary" />
-    </div>
-</form>
