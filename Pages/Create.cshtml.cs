@@ -12,28 +12,32 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WishList.Pages
 {
-    public class Create : PageModel 
+    public class Create : PageModel
     {
         private readonly ILogger<Create> _logger;
         private readonly ProductContext _context;
         [BindProperty]
         [Required]
-        [Display(Name = "Price HTML ID:")]
+        [Display(Name = "Price HTML Id:")]
         [MinLength(1)]
-        public string priceId {get; set;}
+        public string priceId { get; set; }
         [BindProperty]
         [DataType(DataType.Url)]
         [Required]
-        public string url {get; set;}
+        public string url { get; set; }
         [BindProperty]
         [Required]
-        [Display(Name = "Product Name HTML ID:")]
+        [Display(Name = "Product Name HTML Id:")]
         [MinLength(1)]
-        public string productNameId {get; set;}
+        public string productNameId { get; set; }
+        [BindProperty]
+        [MinLength(1)]
+        [Display(Name = "Vanity Name: ")]
+        public string vanityName { get; set; }
         public Create(ILogger<Create> logger, ProductContext context)
         {
-            _logger = logger; 
-            _context = context; 
+            _logger = logger;
+            _context = context;
         }
 
         public async Task<IActionResult> OnPostAsync()
@@ -42,7 +46,8 @@ namespace WishList.Pages
             {
                 ProductUrl = url,
                 PriceHtmlId = priceId,
-                NameHtmlId = productNameId
+                NameHtmlId = productNameId,
+                VanityName = vanityName
             };
             try
             {

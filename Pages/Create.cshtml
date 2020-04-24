@@ -6,6 +6,10 @@
 <div class="container">
     <form method="POST">
         <div class="form-group">
+                <label asp-for="vanityName" class="control-label"></label>
+                <input asp-for="vanityName" class="form-control" />
+                <span asp-validation-for="vanityName" class="text-danger"></span>
+
                 <label asp-for="url" class="control-label"></label>
                 <input asp-for="url" class="form-control" />
                 <span asp-validation-for="url" class="text-danger"></span>
