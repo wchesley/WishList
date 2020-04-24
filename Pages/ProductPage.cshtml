@@ -14,6 +14,9 @@
                 <tr>
                     <th>ID#: </th>
                     <th>
+                        <label asp-for="@Model.vanityName" class="control-label">Vanity Name:</label>
+                    </th>
+                    <th>
                         <label asp-for="@Model.productUrl" class="control-label">URL:</label>
                         
                     </th>
@@ -27,6 +30,10 @@
                 </tr>
                 <tr>
                     <th>@Model.ProductDetails.Id</th>
+                    <td>
+                        <input type="text" asp-for="@Model.vanityName" value="@Model.ProductDetails.VanityName"/>
+                        <span asp-validation-for="@Model.vanityName" class="text-danger"></span>
+                    </td>
                     <td>
                         <input type="text"  asp-for="@Model.productUrl" value="@Model.ProductDetails.ProductUrl"/>
                         <span asp-validation-for="@Model.productUrl" class="text-danger"></span>
