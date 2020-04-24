@@ -22,8 +22,9 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">
-                    <a asp-page="./SavedProducts" asp-route-sortOrder="@Model.NameSort" asp-route-currentFilter="@Model.searchFilter">Name</a>
+                    <a asp-page="./SavedProducts" asp-route-sortOrder="@Model.NameSort" asp-route-currentFilter="@Model.searchFilter">Vanity Name</a>
                 </th>
+                <th scope="col">HTML Id:</th>
                 <th scope="col">Price</th>
                 <th scope="col">URL:</th>
             </tr>
@@ -33,6 +34,7 @@
             {
                 <tr>
                     <td scope="row">@item.Id</td>
+                    <td>@item.VanityName</td>
                     <td>@item.NameHtmlId</td>
                     <td>@item.PriceHtmlId</td>
                     <td>
