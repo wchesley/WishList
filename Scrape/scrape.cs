@@ -115,8 +115,7 @@ namespace WishList
 
         public Action ScrapeSingle(string url, string priceId, string nameId, int productId)
         {
-            var browser = createBrowser(); 
-            //browser.Navigate.GoToUrl(url);  
+            var browser = createBrowser();  
             getPrice(url, nameId, priceId, browser, productId);
             Program.globalContext.SaveChanges(); 
             browser.Close(); 

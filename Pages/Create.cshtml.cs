@@ -17,7 +17,6 @@ namespace WishList.Pages
         private readonly ILogger<Create> _logger;
         private readonly ProductContext _context;
         [BindProperty]
-        [Required]
         [Display(Name = "Price HTML Id:")]
         [MinLength(1)]
         public string priceId { get; set; }
@@ -26,7 +25,6 @@ namespace WishList.Pages
         [Required]
         public string url { get; set; }
         [BindProperty]
-        [Required]
         [Display(Name = "Product Name HTML Id:")]
         [MinLength(1)]
         public string productNameId { get; set; }
@@ -34,14 +32,33 @@ namespace WishList.Pages
         [MinLength(1)]
         [Display(Name = "Vanity Name: ")]
         public string vanityName { get; set; }
+        [BindProperty]
+        public string prefilledSite { get; set; }
+        public Dictionary<string, List<string>> prefillData {get; set; }
         public Create(ILogger<Create> logger, ProductContext context)
         {
             _logger = logger;
             _context = context;
         }
 
+        public async Task<IActionResult> OnGetAsync()
+        {
+            prefillData = new FormattedSites().formattedSitesDict;
+            return Page();  
+        }
+
         public async Task<IActionResult> OnPostAsync()
         {
+           
+            if(!String.IsNullOrEmpty(prefilledSite))
+            {
+                Console.WriteLine(prefilledSite); 
+                var siteData = new FormattedSites(); 
+                siteData.formattedSitesDict.TryGetValue(prefilledSite, out List<string> priceNamesList);
+                Console.WriteLine($"FOUND: {priceNamesList[0]}+ {priceNamesList[1]}");
+                priceId = priceNamesList[0];
+                productNameId = priceNamesList[1]; 
+            }
             var productMeta = new ProductMeta
             {
                 ProductUrl = url,

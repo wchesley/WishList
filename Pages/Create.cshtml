@@ -21,6 +21,16 @@
                 <label asp-for="productNameId" class="control-label"></label>
                 <input asp-for="productNameId" class="form-control" />
                 <span asp-validation-for="productNameId" class="text-danger"></span>
+                <br/>
+                <p>Prefill site information: <br/><sub>Automatically fill in price and name id's from popular sites</sub></p>
+                
+                @foreach (var item in @Model.prefillData)
+                {
+                    <input type="radio" asp-for="prefilledSite" value="@item.Key"/>
+                    <lable class="contorl-lable">@item.Key</lable>
+                }
+
+                
         </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
