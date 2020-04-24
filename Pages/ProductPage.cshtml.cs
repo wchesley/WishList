@@ -58,7 +58,7 @@ namespace WishList
                 return NotFound();
             }
 
-            ProductsList = _context.Product.Where(p => ProductDetails.Id == p.productMeta.Id).ToList();
+            ProductsList = ProductDetails.products.ToList();
 
             List<Array> initX = new List<Array>();
             List<double> innitY = new List<double>();
