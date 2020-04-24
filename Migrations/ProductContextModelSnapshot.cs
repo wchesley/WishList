@@ -23,9 +23,11 @@ namespace WishList.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("name")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("price")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("productMetaId")
@@ -48,12 +50,18 @@ namespace WishList.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("NameHtmlId")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PriceHtmlId")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ProductUrl")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("VanityName")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");

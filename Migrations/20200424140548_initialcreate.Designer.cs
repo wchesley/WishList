@@ -9,7 +9,7 @@ using WishList;
 namespace WishList.Migrations
 {
     [DbContext(typeof(ProductContext))]
-    [Migration("20200420013625_initialcreate")]
+    [Migration("20200424140548_initialcreate")]
     partial class initialcreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,9 +25,11 @@ namespace WishList.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("name")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("price")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("productMetaId")
@@ -50,12 +52,18 @@ namespace WishList.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("NameHtmlId")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PriceHtmlId")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ProductUrl")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("VanityName")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
