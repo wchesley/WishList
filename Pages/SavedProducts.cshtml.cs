@@ -69,6 +69,8 @@ namespace WishList.Pages
             {
                 return NotFound();
             }
+
+            //Load 1:M relationship from DB: 
             ProductMeta itemToDelete = await _context.ProductMeta.Include(p => p.products)
                 .AsNoTracking().FirstOrDefaultAsync(pd => pd.Id == id);
             var scrapedItems = itemToDelete.products; 
@@ -78,7 +80,9 @@ namespace WishList.Pages
             }
             try
             {
+                //Delete Parent obj: 
                 _context.ProductMeta.Remove(itemToDelete);
+                //Delete Children too: 
                 _context.RemoveRange(scrapedItems);
                 await _context.SaveChangesAsync();
                 _logger.LogInformation($"Obj Deleted from Database:\nID:{itemToDelete.Id}\nURL:{itemToDelete.ProductUrl}");
