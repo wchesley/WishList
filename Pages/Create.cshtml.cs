@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations; 
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 
@@ -52,11 +52,13 @@ namespace WishList.Pages
             try
             {
                 _context.ProductMeta.Add(productMeta);
-                await _context.SaveChangesAsync(); 
+                await _context.SaveChangesAsync();
+                scrape scraper = new scrape();
+                scraper.ScrapeSingle(productMeta.ProductUrl, productMeta.PriceHtmlId, productMeta.NameHtmlId, productMeta.Id);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                _logger.LogWarning(e, "Error Saving to database:"); 
+                _logger.LogWarning(e, "Error Saving to database:");
             }
             return RedirectToPage("SavedProducts");
         }
