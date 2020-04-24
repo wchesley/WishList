@@ -50,10 +50,10 @@ namespace WishList.Pages
             switch (sortOrder)
             {
                 case "name_desc":
-                    productMetas = productMetas.OrderByDescending(p => p.NameHtmlId);
+                    productMetas = productMetas.OrderByDescending(p => p.VanityName);
                     break;
                 case "name":
-                    productMetas = productMetas.OrderBy(p => p.NameHtmlId);
+                    productMetas = productMetas.OrderBy(p => p.VanityName);
                     break;
             }
             int pageSize = 10;
