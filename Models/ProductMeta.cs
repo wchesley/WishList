@@ -17,6 +17,7 @@ namespace WishList
         [MinLength(1)]
         [Required]
         public string NameHtmlId {get; set;}
+        public string VanityName {get; set;}
         public List<Product> products {get; set;} = new List<Product>();
     }
 }

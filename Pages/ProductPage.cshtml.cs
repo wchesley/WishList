@@ -31,6 +31,9 @@ namespace WishList
         [BindProperty]
         [Required]
         public string priceHtmlId { get; set; }
+        [BindProperty]
+        public string vanityName {get; set;}
+
         public ProductPage(ILogger<ProductPage> logger, ProductContext context)
         {
             _context = context;
@@ -110,6 +113,7 @@ namespace WishList
             ProductDetails.NameHtmlId = nameHtmlId;
             ProductDetails.PriceHtmlId = priceHtmlId;
             ProductDetails.ProductUrl = productUrl;
+            ProductDetails.VanityName = vanityName; 
             await _context.SaveChangesAsync();
             return RedirectToPage("./SavedProducts");
         }
