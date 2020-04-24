@@ -51,8 +51,11 @@ namespace WishList
                 return NotFound();
             }
             _logger.LogInformation($"OnGET Fired:\n\tRequested id?:{id.ToString()}\n\tTime:{DateTime.Now.ToString()}");
+            
+            //Load 1:M relationship from DB: 
             ProductDetails = await _context.ProductMeta.Include(p => p.products)
                 .AsNoTracking().FirstOrDefaultAsync(pd => pd.Id == id);
+                
             if (ProductDetails == null)
             {
                 return NotFound();
@@ -60,17 +63,23 @@ namespace WishList
 
             ProductsList = ProductDetails.products.ToList();
 
+            //convert data to JSON for Chart: 
+            //prep two lists for x and y data: 
             List<Array> initX = new List<Array>();
             List<double> innitY = new List<double>();
             foreach (var product in ProductsList)
             {
+                //Y value needs to be a number: 
+                //can ignore the dollar sign: https://docs.microsoft.com/en-us/dotnet/api/system.double.parse?redirectedfrom=MSDN&view=netframework-4.8#System_Double_Parse_System_String_System_Globalization_NumberStyles_ 
                 var tempY =  double.Parse(product.price, NumberStyles.AllowCurrencySymbol | NumberStyles.Number);
                 Array tempX = new object[] {product.timeRetreived.ToString()};
                 initX.Add(tempX);
                 innitY.Add(tempY);
             }
+            //new list for storage: 
             var Xaxis = initX.ToList();
             var Yaxis = innitY.ToList();
+            //serialize into JSON and store in a string: 
             chartXAxis = JsonConvert.SerializeObject(Xaxis);
             chartYAxis = JsonConvert.SerializeObject(Yaxis);
             return Page();
