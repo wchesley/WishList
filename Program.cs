@@ -18,7 +18,17 @@ namespace WishList
         {
             var host = CreateHostBuilder(args).Build();
             var scope = host.Services.CreateScope();
-            globalContext = scope.ServiceProvider.GetRequiredService<ProductContext>();
+            var services = scope.ServiceProvider; 
+            globalContext = services.GetRequiredService<ProductContext>();
+            try 
+            {
+                SeedData.Initialize(services);
+            }
+            catch(Exception e)
+            {
+                var logger = services.GetRequiredService<ILogger<Program>>();
+                logger.LogError(e, "Error Seeding Database: "); 
+            }
             host.Run();
         }
 
