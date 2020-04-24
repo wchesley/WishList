@@ -24,7 +24,9 @@
                 <th scope="col">
                     <a asp-page="./SavedProducts" asp-route-sortOrder="@Model.NameSort" asp-route-currentFilter="@Model.searchFilter">Vanity Name</a>
                 </th>
-                <th scope="col">HTML Id:</th>
+                <th scope="col">
+                    <a asp-page="./SavedProducts" asp-route-sortOrder="@Model.NameIdSort" asp-route-currentFilter="@Model.searchFilter">HTML Id:</a>
+                </th>
                 <th scope="col">Price</th>
                 <th scope="col">URL:</th>
             </tr>

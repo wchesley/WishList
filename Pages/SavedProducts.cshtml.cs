@@ -15,6 +15,7 @@ namespace WishList.Pages
         private readonly ILogger<SavedProducts> _logger;
         public Paginate<ProductMeta> SavedProductsList { get; set; }
         public string NameSort { get; set; }
+        public string NameIdSort { get; set; }
         public string CurrentSort { get; set; }
         public string searchFilter { get; set; }
 
@@ -29,6 +30,7 @@ namespace WishList.Pages
         {
             CurrentSort = sortOrder;
             NameSort = String.IsNullOrEmpty(sortOrder) ? "name" : "name_desc";
+            NameIdSort = sortOrder == "id" ? "id_desc" : "id"; 
 
             if (searchString != null)
             {
@@ -49,12 +51,22 @@ namespace WishList.Pages
 
             switch (sortOrder)
             {
-                case "name_desc":
-                    productMetas = productMetas.OrderByDescending(p => p.VanityName);
-                    break;
                 case "name":
                     productMetas = productMetas.OrderBy(p => p.VanityName);
                     break;
+                case "name_desc":
+                    productMetas = productMetas.OrderByDescending(p => p.VanityName);
+                    break;
+                case "id": 
+                    productMetas = productMetas.OrderBy(p => p.NameHtmlId); 
+                    break; 
+                case "id_desc":
+                    productMetas = productMetas.OrderByDescending(p => p.NameHtmlId);
+                    break;
+                default:
+                    productMetas = productMetas.OrderBy(p => p.Id);
+                    break;
+                
             }
             int pageSize = 10;
             SavedProductsList = await Paginate<ProductMeta>.CreateAsync(productMetas.AsNoTracking(), pageIndex ?? 1, pageSize);
@@ -73,7 +85,7 @@ namespace WishList.Pages
             //Load 1:M relationship from DB: 
             ProductMeta itemToDelete = await _context.ProductMeta.Include(p => p.products)
                 .AsNoTracking().FirstOrDefaultAsync(pd => pd.Id == id);
-            var scrapedItems = itemToDelete.products; 
+            var scrapedItems = itemToDelete.products;
             if (itemToDelete == null)
             {
                 return NotFound();
