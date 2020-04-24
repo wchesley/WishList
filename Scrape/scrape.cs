@@ -112,6 +112,16 @@ namespace WishList
             browser.Close();
             return null; 
         }
+
+        public Action ScrapeSingle(string url, string priceId, string nameId, int productId)
+        {
+            var browser = createBrowser(); 
+            //browser.Navigate.GoToUrl(url);  
+            getPrice(url, nameId, priceId, browser, productId);
+            Program.globalContext.SaveChanges(); 
+            browser.Close(); 
+            return null; 
+        }
     }
 }
 /*
