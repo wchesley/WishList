@@ -3,15 +3,56 @@
 @{
     ViewData["Title"] = "Product Details";
 }
+<script src="~/js/Chart.min.js"></script>
 <h1>Product Details</h1>
 
 <div class="container">
-    <dl class="row">
-        <dd class="col-sm-2">@Model.ProductDetails.Id</dd>
-        <dt class="col-sm-2"><a href="@Model.ProductDetails.ProductUrl">URL</a></dt>
-        <dd class="col-sm-2">@Model.ProductDetails.NameHtmlId</dd>
-        <dt class="col-sm-2">@Model.ProductDetails.PriceHtmlId</dt>
-        <dd class="col-sm-10">
+    @Html.AntiForgeryToken()
+    <div class="col-lg">
+        <table class="table">
+            <form method="POST" class="form-control">
+                <tr>
+                    <th>ID#: </th>
+                    <th>
+                        <label asp-for="@Model.productUrl" class="control-label">URL:</label>
+                        
+                    </th>
+                    <th>
+                        <label asp-for="@Model.nameHtmlId" class="control-label">Name ID or CSS Class:</label>
+                        
+                    </th>
+                    <th>
+                        <label asp-for="@Model.priceHtmlId" class="control-label">Price ID or CSS Class:</label>
+                    </th>
+                </tr>
+                <tr>
+                    <th>@Model.ProductDetails.Id</th>
+                    <td>
+                        <input type="text"  asp-for="@Model.productUrl" value="@Model.ProductDetails.ProductUrl"/>
+                        <span asp-validation-for="@Model.productUrl" class="text-danger"></span>
+                    </td>
+                    <td>
+                        <input type="text" asp-for="@Model.nameHtmlId" value="@Model.ProductDetails.NameHtmlId"/>
+                        <span asp-validation-for="@Model.nameHtmlId" class="text-danger"></span>
+                    </td>
+                    <td>
+                        <input type="text" asp-for="@Model.priceHtmlId" value="@Model.ProductDetails.PriceHtmlId"/>
+                        <span asp-validation-for="@Model.priceHtmlId" class="text-danger"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="submit" class="btn btn-primary" value="Save" asp-page-handler="Update" asp-route-id="@Model.ProductDetails.Id"/>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </form>
+        </table>
+    </div>
+    <div class="col-lg">
+        <h2>Scraped Data:</h2>
             <table class="table">
                 <tr>
                     <th>Name</th>
@@ -24,13 +65,86 @@
                         <td>@item.name</td>
                         <td>@item.price</td>
                         <td>@item.timeRetreived.ToString()</td>
+                        <td>
+                            <div class="delete-section" >
+                            <input type="submit" class="btn btn-danger" asp-page-handler="OnPostDelete" asp-rout-id='@item.Id' asp-rout-parentId='@Model.ProductDetails.Id'/>
+                        </div>
+                        </td>
                     </tr>
                 }
             </table>
-        </dd>
-    </dl>
+        </div>
 </div>
 <div class="container center col-md-4">
-    <a asp-page="./Edit" asp-route-id="@Model.ProductDetails.Id">Edit</a> |
     <a asp-page="./SavedProducts">Back to List</a>
 </div>
+<div class="container">
+    <canvas id="DataChart"></canvas>
+</div>
+
+<script>
+    //adapted from: https://dev.to/zoltanhalasz/chartjs-tutorial-with-asp-net-core-2-2-razor-pages-3gn8
+    //but mostly from the repo cause that tutorial is total shit: https://github.com/zoltanhalasz/ChartJSTutorial
+    function showChart() {
+        var Xaxis = @Html.Raw(Model.chartXAxis);
+        var Yaxis = @Html.Raw(Model.chartYAxis);
+        console.log("Date:\n"+ Xaxis);
+        console.log("Price:\n"+ Yaxis);
+        let popCanvasName = document.getElementById("DataChart");
+        let barChartName = new Chart(popCanvasName, {
+            type: 'line',
+            data: {
+            labels: Xaxis,
+                datasets: [{
+                    label: 'Price',
+                    data: Yaxis,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    xAxes: [{
+                        display:true,
+                        scaleLabel:{
+                            display:true,
+                            labelString:"Date"
+                        }
+                    }],
+                    yAxes: [{
+                        display: true,
+                        scaleLabel:{
+                            display: true,
+                            labelString:"Price"
+                        },
+                        ticks:{
+                            beginAtZero: false,
+                            sampleSize: @Model.chartYAxis.Count(), 
+                        }
+                    }]
+                }
+            }
+        });
+    }
+    showChart();
+</script>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+   
+}
