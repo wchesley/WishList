@@ -69,12 +69,16 @@ namespace WishList
             List<double> innitY = new List<double>();
             foreach (var product in ProductsList)
             {
-                //Y value needs to be a number: 
-                //can ignore the dollar sign: https://docs.microsoft.com/en-us/dotnet/api/system.double.parse?redirectedfrom=MSDN&view=netframework-4.8#System_Double_Parse_System_String_System_Globalization_NumberStyles_ 
-                var tempY =  double.Parse(product.price, NumberStyles.AllowCurrencySymbol | NumberStyles.Number);
+                double tempY = 0.00;
                 Array tempX = new object[] {product.timeRetreived.ToString()};
-                initX.Add(tempX);
-                innitY.Add(tempY);
+                if(!product.price.Contains("Error"))
+                {
+                    //Y value needs to be a number: 
+                    //can ignore the dollar sign: https://docs.microsoft.com/en-us/dotnet/api/system.double.parse?redirectedfrom=MSDN&view=netframework-4.8#System_Double_Parse_System_String_System_Globalization_NumberStyles_ 
+                    tempY =  double.Parse(product.price, NumberStyles.AllowCurrencySymbol | NumberStyles.Number);
+                    initX.Add(tempX);
+                    innitY.Add(tempY); 
+                }                
             }
             //new list for storage: 
             var Xaxis = initX.ToList();
