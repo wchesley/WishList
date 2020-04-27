@@ -44,7 +44,7 @@ namespace WishList
         HTTP GET:
         */
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(int? id, int? postedID)
         {
             if (id == null)
             {
@@ -62,30 +62,7 @@ namespace WishList
             }
 
             ProductsList = ProductDetails.products.ToList();
-
-            //convert data to JSON for Chart: 
-            //prep two lists for x and y data: 
-            List<Array> initX = new List<Array>();
-            List<double> innitY = new List<double>();
-            foreach (var product in ProductsList)
-            {
-                double tempY = 0.00;
-                Array tempX = new object[] {product.timeRetreived.ToString()};
-                if(!product.price.Contains("Error"))
-                {
-                    //Y value needs to be a number: 
-                    //can ignore the dollar sign: https://docs.microsoft.com/en-us/dotnet/api/system.double.parse?redirectedfrom=MSDN&view=netframework-4.8#System_Double_Parse_System_String_System_Globalization_NumberStyles_ 
-                    tempY =  double.Parse(product.price, NumberStyles.AllowCurrencySymbol | NumberStyles.Number);
-                    initX.Add(tempX);
-                    innitY.Add(tempY); 
-                }                
-            }
-            //new list for storage: 
-            var Xaxis = initX.ToList();
-            var Yaxis = innitY.ToList();
-            //serialize into JSON and store in a string: 
-            chartXAxis = JsonConvert.SerializeObject(Xaxis);
-            chartYAxis = JsonConvert.SerializeObject(Yaxis);
+            PoputlateGraph(); 
             return Page();
         }
 
@@ -93,26 +70,42 @@ namespace WishList
         HTTP POST:
         */
 
-        public async Task<IActionResult> OnPostDelete(int? id, int? parentId)
+        public async Task<IActionResult> OnPostDelete(int? parentId, int? id)
         {
-            _logger.LogInformation("OnPostDelete Called...");
-            if (id == null || parentId == null)
+            _logger.LogInformation($"OnPostDelete Called...\n");
+            if (id == null)
             {
+                _logger.LogError("ID is null");
                 return NotFound();
             }
+            
+            //Page was throwing error due to graph not being populated: 
+            
+            //var thing =  _context.Product.Where(p => p.Id == id).Include(p => p.productMeta).First(); 
             ProductDetails = await _context.ProductMeta.Include(p => p.products)
                 .AsNoTracking().FirstOrDefaultAsync(pd => pd.Id == parentId);
-            Product itemToDelete = await _context.Product.FindAsync(id);
+            //ProductDetails = thing.productMeta;  
+            Product itemToDelete = ProductDetails.products.Where(p => p.Id == id).First();
+            // if (!ModelState.IsValid)
+            // {
+            //     _logger.LogError("Model State invalid!");
+            //     return Page();
+            // }
+            
+
             try
             {
                 _context.Product.Remove(itemToDelete);
                 await _context.SaveChangesAsync();
-                return RedirectToPage("./ProductPage?id=" + ProductDetails.Id);
+                ProductsList = ProductDetails.products.ToList();
+                PoputlateGraph();
+                _logger.LogInformation($"removed: {itemToDelete.Id} : {itemToDelete.name}"); 
+                return Page();
             }
             catch (Exception e)
             {
                 _logger.LogError(e, "Error deleting obj");
-                return RedirectToPage("./ProductPage?id=" + ProductDetails.Id);
+                return Page();
             }
         }
         public async Task<IActionResult> OnPostUpdate(int? id)
@@ -126,9 +119,42 @@ namespace WishList
             ProductDetails.NameHtmlId = nameHtmlId;
             ProductDetails.PriceHtmlId = priceHtmlId;
             ProductDetails.ProductUrl = productUrl;
-            ProductDetails.VanityName = vanityName; 
+            ProductDetails.VanityName = vanityName;
             await _context.SaveChangesAsync();
             return RedirectToPage("./SavedProducts");
+        }
+
+        public void PoputlateGraph()
+        {
+            if (ProductsList == null)
+            {
+                chartXAxis = JsonConvert.SerializeObject("No information");
+                chartYAxis = JsonConvert.SerializeObject("0");
+                return;
+            }
+            //convert data to JSON for Chart: 
+            //prep two lists for x and y data: 
+            List<Array> initX = new List<Array>();
+            List<double> innitY = new List<double>();
+            foreach (var product in ProductsList)
+            {
+                double tempY = 0.00;
+                Array tempX = new object[] { product.timeRetreived.ToString() };
+                if (!product.price.Contains("Error"))
+                {
+                    //Y value needs to be a number: 
+                    //can ignore the dollar sign: https://docs.microsoft.com/en-us/dotnet/api/system.double.parse?redirectedfrom=MSDN&view=netframework-4.8#System_Double_Parse_System_String_System_Globalization_NumberStyles_ 
+                    tempY = double.Parse(product.price, NumberStyles.AllowCurrencySymbol | NumberStyles.Number);
+                    initX.Add(tempX);
+                    innitY.Add(tempY);
+                }
+            }
+            //new list for storage: 
+            var Xaxis = initX.ToList();
+            var Yaxis = innitY.ToList();
+            //serialize into JSON and store in a string: 
+            chartXAxis = JsonConvert.SerializeObject(Xaxis);
+            chartYAxis = JsonConvert.SerializeObject(Yaxis);
         }
     }
 }

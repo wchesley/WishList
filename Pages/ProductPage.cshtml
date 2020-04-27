@@ -77,8 +77,11 @@
                         <td>@item.timeRetreived.ToString()</td>
                         <td>
                             <div class="delete-section" >
-                            <input type="submit" class="btn btn-danger" asp-page-handler="OnPostDelete" asp-rout-id='@item.Id' asp-rout-parentId='@Model.ProductDetails.Id' value="Delete"/>
-                        </div>
+                                @Html.AntiForgeryToken() 
+                                <form method="POST">
+                                <input type="submit" class="btn btn-danger" asp-page-handler="Delete" asp-route-parentId='@Model.ProductDetails.Id' asp-route-id='@item.Id' value="Delete"/>
+                                </form>                        
+                            </div>
                         </td>
                     </tr>
                 }
