@@ -32,7 +32,7 @@ namespace WishList
         [Required]
         public string priceHtmlId { get; set; }
         [BindProperty]
-        public string vanityName {get; set;}
+        public string vanityName { get; set; }
 
         public ProductPage(ILogger<ProductPage> logger, ProductContext context)
         {
@@ -51,11 +51,11 @@ namespace WishList
                 return NotFound();
             }
             _logger.LogInformation($"OnGET Fired:\n\tRequested id?:{id.ToString()}\n\tTime:{DateTime.Now.ToString()}");
-            
+
             //Load 1:M relationship from DB: 
             ProductDetails = await _context.ProductMeta.Include(p => p.products)
                 .AsNoTracking().FirstOrDefaultAsync(pd => pd.Id == id);
-                
+
             if (ProductDetails == null)
             {
                 return NotFound();
