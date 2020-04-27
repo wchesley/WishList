@@ -1,4 +1,4 @@
-@page
+@page "{handler?}"
 @model ProductPage
 @{
     ViewData["Title"] = "Product Details";
@@ -8,6 +8,10 @@
 
 <div class="container">
     @Html.AntiForgeryToken()
+    @if(ViewData["deletedProduct"] != null)
+    {
+        <p class="text-danger">Item @(ViewData["deletedProductName"]) removed</p>
+    }
     <div class="col-lg">
         <table class="table">
             <form method="POST" class="form-control">

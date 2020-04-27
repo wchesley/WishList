@@ -99,7 +99,8 @@ namespace WishList
             //     _logger.LogError("Model State invalid!");
             //     return Page();
             // }
-            
+            ViewData["deletedProductName"] = itemToDelete.name;
+            ViewData["deletedProduct"] = itemToDelete.Id; 
 
             try
             {
