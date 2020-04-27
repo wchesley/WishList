@@ -9,16 +9,14 @@ namespace WishList
 {
     public class scrape
     {
-        private readonly ProductContext _context;
-        private readonly ILogger<scrape> _logger;
-        public scrape(ProductContext context, ILogger<scrape> logger)
-        {
-            _context = context;
-            _logger = logger;
-        }
         public scrape()
         {
         }
+
+        ///<summary>
+        ///Sets up chrome browser for used within the app.
+        ///sets default values for browser as well, namely a headless browser and a timeout of 30sec 
+        ///</summary>
         public ChromeDriver createBrowser()
         {
             var options = new ChromeOptions();
@@ -28,6 +26,10 @@ namespace WishList
             browser.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(30);
             return browser;
         }
+
+        ///<summary>
+        ///Navigates browser to specified url. Grabs Price and Name of Product by either their HTML ID or CSS Class. 
+        ///</summary>
         public void getPrice(string url, string titleId, string priceId, ChromeDriver browser, int productId)
         {
             string Price; 
@@ -89,6 +91,9 @@ namespace WishList
             Console.WriteLine();
         }
 
+        ///<summary>
+        ///Iterates over database and scrapes every ProductMeta object. 
+        ///</summary>
         public Action Scrape()
         {
             var services = Program.globalContext; 
@@ -113,6 +118,9 @@ namespace WishList
             return null; 
         }
 
+        ///<summary>
+        ///Scrapes one single ProductMeta object.
+        ///</summary>
         public Action ScrapeSingle(string url, string priceId, string nameId, int productId)
         {
             var browser = createBrowser();  
