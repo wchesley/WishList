@@ -43,8 +43,12 @@ namespace WishList
         /*
         HTTP GET:
         */
-
-        public async Task<IActionResult> OnGetAsync(int? id, int? postedID)
+        ///<summary>
+        ///OnGet for ProductMeta found by ID. deletedid is only used when 
+        ///OnPostDelete() is called. It allows that method to redirect back to 
+        ///this page. 
+        ///</summary>
+        public async Task<IActionResult> OnGetAsync(int? id, int? deletedid)
         {
             if (id == null)
             {
@@ -70,6 +74,10 @@ namespace WishList
         HTTP POST:
         */
 
+        ///<summary>
+        ///OnPost method for deleting one specific scraped 
+        ///item within a product detail page. Redirects back to Product Detail page.
+        ///</summary>
         public async Task<IActionResult> OnPostDelete(int? parentId, int? id)
         {
             _logger.LogInformation($"OnPostDelete Called...\n");
@@ -108,6 +116,10 @@ namespace WishList
                 return Page();
             }
         }
+
+        ///<summary>
+        ///OnPost for updating ProductMeta item 
+        ///</summary>
         public async Task<IActionResult> OnPostUpdate(int? id)
         {
             if (!ModelState.IsValid)
@@ -124,6 +136,11 @@ namespace WishList
             return RedirectToPage("./SavedProducts");
         }
 
+        ///<summary>
+        ///Method used to add data for graphing within product detail page.
+        ///if nothing is within the ProductList property, this method passes up 
+        ///default values so the page won't error out.  
+        ///</summary>
         public void PoputlateGraph()
         {
             if (ProductsList == null)
