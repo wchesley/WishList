@@ -20,6 +20,7 @@ namespace WishList
             var scope = host.Services.CreateScope();
             var services = scope.ServiceProvider; 
             globalContext = services.GetRequiredService<ProductContext>();
+            globalContext.Database.Migrate();
             try 
             {
                 SeedData.Initialize(services);
