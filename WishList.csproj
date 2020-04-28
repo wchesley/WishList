@@ -2,7 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <EnvironmentName>Production</EnvironmentName>
+    <environmentVariables>
+      <environmentVariable name="ASPNETCORE_ENVIRONMENT" value="Production" />
+    </environmentVariables>
   </PropertyGroup>
 
   <ItemGroup>
