@@ -16,6 +16,8 @@
     <PackageReference Include="Selenium.WebDriver" Version="3.141.0" />
   </ItemGroup>
   <Target Name="PrePublishTarget" AfterTargets="Publish">
+  <Exec Command="dotnet tool install --global dotnet-ef" />
+  <Exec Command="dotnet ef database update" />
   <Exec Command="export ASPNETCORE_ENVIRONMENT=Staging"/>
 </Target>
 
