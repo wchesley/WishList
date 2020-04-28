@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <EnvironmentName>Production</EnvironmentName>
+    <EnvironmentName>Staging</EnvironmentName>
   </PropertyGroup>
 
   <ItemGroup>
