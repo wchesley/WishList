@@ -16,6 +16,7 @@ namespace WishList
         public static ProductContext globalContext; 
         public static void Main(string[] args)
         {
+            Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "Production");
             var host = CreateHostBuilder(args).Build();
             var scope = host.Services.CreateScope();
             var services = scope.ServiceProvider; 
