@@ -15,14 +15,7 @@
     <PackageReference Include="Quartz" Version="3.0.7" />
     <PackageReference Include="Selenium.WebDriver" Version="3.141.0" />
   </ItemGroup>
-<Target Name="PrePublishTarget" AfterTargets="Publish">
-  <Exec Command="dotnet tool install --global dotnet-ef"/>
-  <Exec Command="  cat << \EOF >> ~/.bash_profile
-  # Add .NET Core SDK tools
-  export PATH='$PATH:/app/.dotnet/tools'
-  EOF"/>
-  <Exec Command="dotnet ef database update" />
-</Target>
+
 
 
 </Project>
