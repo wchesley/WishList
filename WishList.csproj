@@ -15,7 +15,10 @@
     <PackageReference Include="Quartz" Version="3.0.7" />
     <PackageReference Include="Selenium.WebDriver" Version="3.141.0" />
   </ItemGroup>
-<Exec Command="export ASPNETCORE_ENVIRONMENT=Staging"/>
+  <Target Name="PrePublishTarget" AfterTargets="Publish">
+  <Exec Command="export ASPNETCORE_ENVIRONMENT=Staging"/>
+</Target>
+
 
 
 </Project>
