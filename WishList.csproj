@@ -17,7 +17,10 @@
   </ItemGroup>
 <Target Name="PrePublishTarget" AfterTargets="Publish">
   <Exec Command="dotnet tool install --global dotnet-ef"/>
-  <Exec Command="export PATH='$PATH:/app/.dotnet/tools'"/>
+  <Exec Command="  cat << \EOF >> ~/.bash_profile
+  # Add .NET Core SDK tools
+  export PATH='$PATH:/app/.dotnet/tools'
+  EOF"/>
   <Exec Command="dotnet ef database update" />
 </Target>
 
