@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <EnvironmentName>Production</EnvironmentName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,7 +15,9 @@
     <PackageReference Include="Quartz" Version="3.0.7" />
     <PackageReference Include="Selenium.WebDriver" Version="3.141.0" />
   </ItemGroup>
-
+<Target Name="PrePublishTarget" AfterTargets="Publish">
+  <Exec Command="dotnet ef database update" />
+</Target>
 
 
 </Project>
