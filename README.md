@@ -2,6 +2,16 @@
 ### CIDM 3312 Final Project
 ##### Walker Chesley 4/19/2020
 ---
+## Demo
+A demo of the app is available [here](https://wishlist-bytes.herokuapp.com/). The app currently sits on Heroku free tier with a SQLite backend. That being said nothing there is persistand besides the seeded data, everthing gets reset whenever the dyno does. 
+### Usage: 
+- Visit the [Add Product](https://wishlist-bytes.herokuapp.com/Create) page. 
+- Enter at least the URL, HTML ID of `Name` and `Price` of your desired product. 
+    - For sites such as Amazon and Newegg, you do not need HTML ID of `Name` and `Price`. Those are preset and can be filled in automatically
+- Click `Create`
+    - When you first create a product, the app will go out immediatly and scrape the item, so the page can take a minute or two to finish. 
+- View all Products [here](https://wishlist-bytes.herokuapp.com/SavedProducts)
+
 ## OVERVIEW
 ### 1.	Project Background and Description
 This project is to be a summation of all knowledge acquired during the course of CIDM-3312 as taught at WTAMU. The Idea I have for my project is a web-app called  WishList. A tool to assist with long-term shopping on the internet. I believe this app will cover all bases covered in the course of the class as well as some beyond the scope of this course. At a high level the user will find a web page with an item they want to buy; the user saves the URL of the page as well as two items from the pages HTML: The HTML ID of the products name and the HTML ID of the products price. Using these 3 items as one entity, this object will be added to a list of other pre-existing items that will be scheduled for scraping with CRON. Daily price data will be timestamped and saved into the database on a new table.
@@ -25,7 +35,8 @@ The new system must include the following:
 ### 4.	Specific Exclusions from Scope
  	Depends on how much time I have: I would probably use some front-end JS library ie. HighCharts
 ~~Graphical representation of historical pricing data.~~ Done.  
-~~Deploy to Webserver~~ Done: https://wishlist-bytes.herokuapp.com/
+~~Deploy to Webserver~~ 
+
 ### 5.	Implementation Plan
 Web Server and business logic is to be ASP.NET/C#
 Data will be retrieved with Selenium and Chrome [https://www.selenium.dev/documentation/] 
