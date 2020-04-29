@@ -25,7 +25,7 @@ namespace WishList
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ProductContext>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString("ProductContext")));
+                options.UseSqlite(Configuration.GetConnectionString("ProductContext")));
             JobScheduler.Start();
             services.AddRazorPages();
             

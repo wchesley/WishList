@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace WishList.Migrations
 {
@@ -13,7 +12,7 @@ namespace WishList.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                        .Annotation("Sqlite:Autoincrement", true),
                     ProductUrl = table.Column<string>(nullable: false),
                     PriceHtmlId = table.Column<string>(nullable: false),
                     NameHtmlId = table.Column<string>(nullable: false),
@@ -29,7 +28,7 @@ namespace WishList.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                        .Annotation("Sqlite:Autoincrement", true),
                     timeRetreived = table.Column<DateTime>(nullable: false),
                     price = table.Column<string>(nullable: false),
                     name = table.Column<string>(nullable: false),
