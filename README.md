@@ -24,7 +24,8 @@ The new system must include the following:
 - Add links to all appropriate pages in the navigation bar.
 ### 4.	Specific Exclusions from Scope
  	Depends on how much time I have: I would probably use some front-end JS library ie. HighCharts
-Graphical representation of historical pricing data. 
+~~Graphical representation of historical pricing data.~~ Done.  
+~~Deploy to Webserver~~ Done: https://wishlist-bytes.herokuapp.com/
 ### 5.	Implementation Plan
 Web Server and business logic is to be ASP.NET/C#
 Data will be retrieved with Selenium and Chrome [https://www.selenium.dev/documentation/] 
