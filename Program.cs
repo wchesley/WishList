@@ -20,7 +20,7 @@ namespace WishList
             var scope = host.Services.CreateScope();
             var services = scope.ServiceProvider; 
             globalContext = services.GetRequiredService<ProductContext>();
-            globalContext.Database.Migrate();
+            //globalContext.Database.Migrate();
             try 
             {
                 SeedData.Initialize(services);
@@ -28,7 +28,18 @@ namespace WishList
             catch(Exception e)
             {
                 var logger = services.GetRequiredService<ILogger<Program>>();
-                logger.LogError(e, "Error Seeding Database: "); 
+                logger.LogError(e, "Error Seeding Database: \nATTEMPTING MIGRATIONS:\n");
+                try
+                {
+                    globalContext.Database.Migrate();
+                    logger.LogInformation("Migrations applied\nSeeding Data:");
+                    SeedData.Initialize(services);  
+                }
+                catch(Exception e2)
+                {
+                    logger.LogError(e2, "Error performing Migrations:");
+                }
+                  
             }
             host.Run();
         }
