@@ -21,7 +21,7 @@ namespace WishList
         {
             var options = new ChromeOptions();
             options.AddArguments("whitelisted-ips=''", "headless");
-            ChromeDriver browser = new ChromeDriver(@"./app/.chromedriver", options);
+            ChromeDriver browser = new ChromeDriver(".", options);
             //give pages 30 seconds to respond before timeing out: 
             browser.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(30);
             return browser;
