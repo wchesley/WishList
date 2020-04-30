@@ -26,7 +26,7 @@ namespace WishList
         public void ConfigureServices(IServiceCollection services)
         {
             //DotEnv.Config();
-            var test = Environment.GetEnvironmentVariable("DATABSE_URL");
+            var test = Environment.GetEnvironmentVariable("DB_PASSWORD");
             Console.WriteLine($"ENV VAR:{test}");
             services.AddDbContext<ProductContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString(test)));
