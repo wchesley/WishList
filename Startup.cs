@@ -28,7 +28,7 @@ namespace WishList
             //DotEnv.Config();
             //var test = Console.WriteLine(Environment.GetEnvironmentVariable("URI"));
             services.AddDbContext<ProductContext>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString(Environment.GetEnvironmentVariable("DATABASE_URL"))));
+                options.UseNpgsql(Configuration.GetConnectionString("DATABASE_URL")));
             JobScheduler.Start();
             services.AddRazorPages();
             
