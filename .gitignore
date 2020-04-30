@@ -358,3 +358,6 @@ MigrationBackup/
 
 # SQLite DB: 
 *.db
+
+# dotenv.net:
+.env

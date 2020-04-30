@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
+using dotenv.net;
 
 namespace WishList
 {
@@ -24,8 +25,10 @@ namespace WishList
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            DotEnv.Config();
+            //var test = Console.WriteLine(Environment.GetEnvironmentVariable("URI"));
             services.AddDbContext<ProductContext>(options =>
-                options.UseSqlite(Configuration.GetConnectionString("ProductContext")));
+                options.UseNpgsql(Configuration.GetConnectionString(Environment.GetEnvironmentVariable("DATABASE_URL"))));
             JobScheduler.Start();
             services.AddRazorPages();
             
