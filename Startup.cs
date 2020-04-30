@@ -27,7 +27,7 @@ namespace WishList
         {
 
             var test = Environment.GetEnvironmentVariable("DATABASE_URL", EnvironmentVariableTarget.Machine);
-            Console.WriteLine($"ENV VAR:{test}");
+            Console.WriteLine($"ENV VAR URL:{test}");
             services.AddDbContext<ProductContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString(test)));
             JobScheduler.Start();
