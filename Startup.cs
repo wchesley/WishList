@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using dotenv.net;
+using Npgsql;
 
 namespace WishList
 {
@@ -26,10 +27,20 @@ namespace WishList
         public void ConfigureServices(IServiceCollection services)
         {
 
-            var test = Environment.GetEnvironmentVariable("DB_PASSWORD", EnvironmentVariableTarget.Process);
-            Console.WriteLine($"ENV VAR URL:{test}");
+            var test = Environment.GetEnvironmentVariable("DATABASE_URL", EnvironmentVariableTarget.Process);
+            var databaseURI = new Uri(test);
+            var userInfo = databaseURI.UserInfo.Split(':');
+            var builder = new NpgsqlConnectionStringBuilder
+            {
+                Host = databaseURI.Host,
+                Port = databaseURI.Port,
+                Username = userInfo[0],
+                Password = userInfo[1],
+                Database = databaseURI.LocalPath.TrimStart('/')
+            };
+            string psqlConnString = builder.ToString(); 
             services.AddDbContext<ProductContext>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString("ProductContext" + "Password="+test+";")));
+                options.UseNpgsql(Configuration.GetConnectionString(psqlConnString)));
             JobScheduler.Start();
             services.AddRazorPages();
             
