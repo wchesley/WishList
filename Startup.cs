@@ -25,8 +25,8 @@ namespace WishList
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //DotEnv.Config();
-            var test = Environment.GetEnvironmentVariable("DB_PASSWORD");
+
+            var test = Environment.GetEnvironmentVariable("DB_PASSWORD", EnvironmentVariableTarget.Machine);
             Console.WriteLine($"ENV VAR:{test}");
             services.AddDbContext<ProductContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString(test)));
