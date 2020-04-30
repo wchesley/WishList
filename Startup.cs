@@ -40,7 +40,7 @@ namespace WishList
             };
             string psqlConnString = builder.ToString(); 
             services.AddDbContext<ProductContext>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString(psqlConnString)));
+                options.UseNpgsql(Configuration.GetConnectionString(test)));
             JobScheduler.Start();
             services.AddRazorPages();
             
