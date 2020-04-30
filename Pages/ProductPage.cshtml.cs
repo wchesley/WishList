@@ -144,12 +144,12 @@ namespace WishList
         ///</summary>
         public void PoputlateGraph()
         {
-            // if (ProductsList == null)
-            // {
-            //     chartXAxis = JsonConvert.SerializeObject("No information");
-            //     chartYAxis = JsonConvert.SerializeObject("0");
-            //     return;
-            // }
+            if (ProductsList == null)
+            {
+                chartXAxis = JsonConvert.SerializeObject("No information");
+                chartYAxis = JsonConvert.SerializeObject("0");
+                return;
+            }
             //convert data to JSON for Chart: 
             //prep two lists for x and y data: 
             List<Array> initX = new List<Array>();
@@ -162,8 +162,8 @@ namespace WishList
                 {
                     //Y value needs to be a number: 
                     //can ignore the dollar sign: https://docs.microsoft.com/en-us/dotnet/api/system.double.parse?redirectedfrom=MSDN&view=netframework-4.8#System_Double_Parse_System_String_System_Globalization_NumberStyles_
-                    _logger.LogInformation($"Parsing:\n\tPRICE:{product.price} TYPE:{product.price.GetType()}\n\tDATE:{product.timeRetreived.ToString()}");
-                    tempY = double.Parse(product.price, NumberStyles.AllowCurrencySymbol | NumberStyles.Number);
+                    _logger.LogInformation($"Parsing:\n\tPRICE:{product.price.Substring(1)} TYPE:{product.price.GetType()}\n\tDATE:{product.timeRetreived.ToString()}");
+                    double.TryParse(product.price.Substring(1), out tempY);
                     _logger.LogInformation($"PARSED?{tempY} TYPE:{tempY.GetType()}");
                     initX.Add(tempX);
                     innitY.Add(tempY);
