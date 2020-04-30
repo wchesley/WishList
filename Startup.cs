@@ -26,10 +26,10 @@ namespace WishList
         public void ConfigureServices(IServiceCollection services)
         {
 
-            var test = Environment.GetEnvironmentVariable("DATABASE_URL", EnvironmentVariableTarget.Process);
+            var test = Environment.GetEnvironmentVariable("DB_PASSWORD", EnvironmentVariableTarget.Process);
             Console.WriteLine($"ENV VAR URL:{test}");
             services.AddDbContext<ProductContext>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString(test)));
+                options.UseNpgsql(Configuration.GetConnectionString("ProductContext" + "Password="+test+";")));
             JobScheduler.Start();
             services.AddRazorPages();
             
