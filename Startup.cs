@@ -27,20 +27,20 @@ namespace WishList
         public void ConfigureServices(IServiceCollection services)
         {
 
-            var test = Environment.GetEnvironmentVariable("DATABASE_URL", EnvironmentVariableTarget.Process);
-            var databaseURI = new Uri(test);
-            var userInfo = databaseURI.UserInfo.Split(':');
-            var builder = new NpgsqlConnectionStringBuilder
-            {
-                Host = databaseURI.Host,
-                Port = databaseURI.Port,
-                Username = userInfo[0],
-                Password = userInfo[1],
-                Database = databaseURI.LocalPath.TrimStart('/')
-            };
-            string psqlConnString = builder.ToString(); 
+            // var test = Environment.GetEnvironmentVariable("DATABASE_URL", EnvironmentVariableTarget.Process);
+            // var databaseURI = new Uri(test);
+            // var userInfo = databaseURI.UserInfo.Split(':');
+            // var builder = new NpgsqlConnectionStringBuilder
+            // {
+            //     Host = databaseURI.Host,
+            //     Port = databaseURI.Port,
+            //     Username = userInfo[0],
+            //     Password = userInfo[1],
+            //     Database = databaseURI.LocalPath.TrimStart('/')
+            // };
+            // string psqlConnString = builder.ToString(); 
             services.AddDbContext<ProductContext>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString(test)));
+                options.UseNpgsql(Configuration.GetConnectionString("ProductContext")));
             JobScheduler.Start();
             services.AddRazorPages();
             
