@@ -162,7 +162,7 @@ namespace WishList
                 {
                     //Y value needs to be a number: 
                     //can ignore the dollar sign: https://docs.microsoft.com/en-us/dotnet/api/system.double.parse?redirectedfrom=MSDN&view=netframework-4.8#System_Double_Parse_System_String_System_Globalization_NumberStyles_
-                    _logger.LogInformation($"Parsing:\n\tPRICE:{product.price}\n\tDATE:{product.timeRetreived.ToString()}");
+                    _logger.LogInformation($"Parsing:\n\tPRICE:{product.price} TYPE:{product.price.GetType()}\n\tDATE:{product.timeRetreived.ToString()}");
                     tempY = double.Parse(product.price, NumberStyles.AllowCurrencySymbol | NumberStyles.Number);
                     initX.Add(tempX);
                     innitY.Add(tempY);
