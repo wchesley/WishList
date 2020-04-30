@@ -27,7 +27,7 @@ namespace WishList
         {
             //DotEnv.Config();
             var test = Environment.GetEnvironmentVariable("DATABSE_URL");
-            Console.WriteLine(test);
+            Console.WriteLine($"ENV VAR:{test}");
             services.AddDbContext<ProductContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString(test)));
             JobScheduler.Start();
