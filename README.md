@@ -1,7 +1,7 @@
 # WishList
 ### CIDM 3312 Final Project
 ##### Walker Chesley 4/19/2020
----
+
 ## Demo
 A demo of the app is available [here](https://wishlist-bytes.herokuapp.com/). 
 ### Usage: 
@@ -11,7 +11,7 @@ A demo of the app is available [here](https://wishlist-bytes.herokuapp.com/).
 - Click `Create`
     - When you first create a product, the app will go out immediatly and scrape the item, so the page can take a minute or two to finish. 
 - View all Products [here](https://wishlist-bytes.herokuapp.com/SavedProducts)
-
+---
 ## OVERVIEW
 ### 1.	Project Background and Description
 This project is to be a summation of all knowledge acquired during the course of CIDM-3312 as taught at WTAMU. The Idea I have for my project is a web-app called  WishList. A tool to assist with long-term shopping on the internet. I believe this app will cover all bases covered in the course of the class as well as some beyond the scope of this course. At a high level the user will find a web page with an item they want to buy; the user saves the URL of the page as well as two items from the pages HTML: The HTML ID of the products name and the HTML ID of the products price. Using these 3 items as one entity, this object will be added to a list of other pre-existing items that will be scheduled for scraping with CRON. Daily price data will be timestamped and saved into the database on a new table.
@@ -33,17 +33,19 @@ The new system must include the following:
 - Allow the user to sort on at least one record both ascending and descending –OR –filter records using a SelectList.
 - Add links to all appropriate pages in the navigation bar.
 ### 4.	Specific Exclusions from Scope
- 	Depends on how much time I have: I would probably use some front-end JS library ie. HighCharts
-~~Graphical representation of historical pricing data.~~ Done.  
-~~Deploy to Webserver~~ 
+
+- ~~Graphical representation of historical pricing data.~~
+- ~~Replace SQLite~~  
+- ~~Deploy to Webserver~~
+- User Accounts 
 
 ### 5.	Implementation Plan
-Web Server and business logic is to be ASP.NET/C#
-Data will be retrieved with Selenium and Chrome [https://www.selenium.dev/documentation/] 
+Web Server and business logic is to be ASP.NET/C#, Hosting provided by Heroku.
+Data will be retrieved with [Selenium](https://www.selenium.dev/documentation/) and Chrome 
 Due to the nature of running Selenium, Chrome binaries will be included with the project files, allowing this to be deployed and run anywhere. Fresh binaries can be found [here](https://chromedriver.storage.googleapis.com/index.html).
 Naturally the ERD is subject to change during the implementation process. 
 ### 6.	High-Level Timeline/Schedule
-Proposal of Project Due by: 4/18/2020
-Final Project Due by: 5/5/2020
+**~~Proposal of Project Due by: 4/18/2020~~**  
+**Final Project Due by: 5/5/2020**
 ### 7.	 Entity Diagram
  
