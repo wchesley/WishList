@@ -49,13 +49,14 @@ namespace WishList.Pages
 
         public async Task<IActionResult> OnPostAsync()
         {
-           
+           //Check to see if user selected any prefilled site info: 
             if(!String.IsNullOrEmpty(prefilledSite))
             {
-                Console.WriteLine(prefilledSite); 
+                _logger.LogInformation($"Using pre-filled info:{prefilledSite}"); 
                 var siteData = new FormattedSites(); 
                 siteData.formattedSitesDict.TryGetValue(prefilledSite, out List<string> priceNamesList);
                 Console.WriteLine($"FOUND: {priceNamesList[0]}+ {priceNamesList[1]}");
+                //When using prefilled info, it's always in the same order: price, name 
                 priceId = priceNamesList[0];
                 productNameId = priceNamesList[1]; 
             }
@@ -68,6 +69,7 @@ namespace WishList.Pages
             };
             try
             {
+                //Save changes to database and scrape the newly added product. 
                 _context.ProductMeta.Add(productMeta);
                 await _context.SaveChangesAsync();
                 scrape scraper = new scrape();

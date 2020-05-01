@@ -87,13 +87,12 @@ namespace WishList
                 return NotFound();
             }
             
-            //Page was throwing error due to graph not being populated: 
-            
-            //var thing =  _context.Product.Where(p => p.Id == id).Include(p => p.productMeta).First(); 
+
             ProductDetails = await _context.ProductMeta.Include(p => p.products)
                 .AsNoTracking().FirstOrDefaultAsync(pd => pd.Id == parentId);
-            //ProductDetails = thing.productMeta;  
+ 
             Product itemToDelete = ProductDetails.products.Where(p => p.Id == id).First();
+            //ModelState is invalid when deleting individual products: 
             // if (!ModelState.IsValid)
             // {
             //     _logger.LogError("Model State invalid!");
