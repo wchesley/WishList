@@ -161,8 +161,8 @@ namespace WishList
                 if (!product.price.Contains("Error"))
                 {
                     //Y value needs to be a number: 
-                    //can ignore the dollar sign: https://docs.microsoft.com/en-us/dotnet/api/system.double.parse?redirectedfrom=MSDN&view=netframework-4.8#System_Double_Parse_System_String_System_Globalization_NumberStyles_ 
-                    tempY = double.Parse(product.price, NumberStyles.AllowCurrencySymbol | NumberStyles.Number);
+                    //rather than have .NET remove the '$', I've opted to do this my self:
+                    double.TryParse(product.price.Substring(1), out tempY); 
                     initX.Add(tempX);
                     innitY.Add(tempY);
                 }
