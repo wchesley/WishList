@@ -3,7 +3,7 @@
 ##### Walker Chesley 4/19/2020
 ---
 ## Demo
-A demo of the app is available [here](https://wishlist-bytes.herokuapp.com/). The app currently sits on Heroku free tier with a SQLite backend. That being said nothing there is persistand besides the seeded data, everthing gets reset whenever the dyno does. 
+A demo of the app is available [here](https://wishlist-bytes.herokuapp.com/). 
 ### Usage: 
 - Visit the [Add Product](https://wishlist-bytes.herokuapp.com/Create) page. 
 - Enter at least the URL, HTML ID of `Name` and `Price` of your desired product. 
