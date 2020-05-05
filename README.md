@@ -38,6 +38,7 @@ The new system must include the following:
 - ~~Replace SQLite~~  
 - ~~Deploy to Webserver~~
 - User Accounts 
+- Testing
 
 ### 5.	Implementation Plan
 Web Server and business logic is to be ASP.NET/C#, Hosting provided by Heroku.
