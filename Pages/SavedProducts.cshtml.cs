@@ -14,6 +14,7 @@ namespace WishList.Pages
         private readonly ProductContext _context;
         private readonly ILogger<SavedProducts> _logger;
         public Paginate<ProductMeta> SavedProductsList { get; set; }
+        // Pagination vars: 
         public string NameSort { get; set; }
         public string NameIdSort { get; set; }
         public string CurrentSort { get; set; }
@@ -28,6 +29,7 @@ namespace WishList.Pages
         public async Task OnGetAsync(string sortOrder, string currentFilter,
             string searchString, int? pageIndex)
         {
+            //Set pagination vars: 
             CurrentSort = sortOrder;
             NameSort = String.IsNullOrEmpty(sortOrder) ? "name" : "name_desc";
             NameIdSort = sortOrder == "id" ? "id_desc" : "id"; 
@@ -48,7 +50,7 @@ namespace WishList.Pages
             {
                 productMetas = productMetas.Where(p => p.NameHtmlId.Contains(searchFilter));
             }
-
+            //Reorder list based on which button was clicked in the webpage: 
             switch (sortOrder)
             {
                 case "name":
@@ -68,15 +70,13 @@ namespace WishList.Pages
                     break;
                 
             }
+            //max number of objects returned from database: 
             int pageSize = 10;
             SavedProductsList = await Paginate<ProductMeta>.CreateAsync(productMetas.AsNoTracking(), pageIndex ?? 1, pageSize);
         }
         public async Task<IActionResult> OnPostAsync(int? id)
         {
-            // List<ProductMeta>SavedProductsList = await _context.ProductMeta.ToListAsync();
-            // scrape scraper = new scrape();
-            // scraper.Scrape();
-            // RedirectToPage("./Index");
+
             if (id == null)
             {
                 return NotFound();

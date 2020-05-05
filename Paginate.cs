@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WishList
 {
+    //Provides pagination to any webpage: 
+    //adapted from: https://docs.microsoft.com/en-us/aspnet/mvc/overview/getting-started/getting-started-with-ef-using-mvc/sorting-filtering-and-paging-with-the-entity-framework-in-an-asp-net-mvc-application
     public class Paginate<T> : List<T>
     {
         public int pageIndex {get; private set;}

@@ -13,6 +13,7 @@ namespace WishList
 {
     public class Program
     {
+        //some background jobs need access to the database, had to do it without dependency injection
         public static ProductContext globalContext; 
         public static void Main(string[] args)
         {
@@ -20,6 +21,7 @@ namespace WishList
             var scope = host.Services.CreateScope();
             var services = scope.ServiceProvider; 
             globalContext = services.GetRequiredService<ProductContext>();
+            //Seed DB if nothing is there: 
             try 
             {
                 SeedData.Initialize(services);
