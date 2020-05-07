@@ -14,9 +14,6 @@ steps:
   displayName: 'Run a one-line script'
 
 - script: echo Building Project
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'build'
-    projects: './'
-  displayName: 'Building WishList...'
+- script: dotnet build
+  displayName: 'Building Project...'
 
