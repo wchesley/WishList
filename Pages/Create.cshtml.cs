@@ -72,7 +72,7 @@ namespace WishList.Pages
                 //Save changes to database and scrape the newly added product. 
                 _context.ProductMeta.Add(productMeta);
                 await _context.SaveChangesAsync();
-                scrape scraper = new scrape();
+                scrape scraper = new scrape(_context);
                 scraper.ScrapeSingle(productMeta.ProductUrl, productMeta.PriceHtmlId, productMeta.NameHtmlId, productMeta.Id, _context);
             }
             catch (Exception e)

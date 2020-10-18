@@ -10,10 +10,10 @@ namespace WishList
 {
     public class scrape
     {
-
-        public scrape()
+        private ProductContext _dbContext; 
+        public scrape(ProductContext dbContext)
         {
-
+            _dbContext = dbContext; 
         }
 
         ///<summary>
@@ -33,7 +33,7 @@ namespace WishList
         ///<summary>
         ///Navigates browser to specified url. Grabs Price and Name of Product by either their HTML ID or CSS Class. 
         ///</summary>
-        public void getPrice(string url, string titleId, string priceId, ChromeDriver browser, int productId, ProductContext dbContext)
+        public void getPrice(string url, string titleId, string priceId, ChromeDriver browser, int productId)
         {
             string Price;
             string title;
@@ -81,14 +81,14 @@ namespace WishList
                 Console.WriteLine($"Object Found:\nName:{title}\nPrice:{Price}\nURL:{url}\nTime:{timeStamp.ToString()}");
 
                 
-                var test = dbContext.ProductMeta.Find(productId);
+                var test = _dbContext.ProductMeta.Find(productId);
                 var newProduct = new Product
                 {
                     timeRetreived = timeStamp,
                     price = Price,
                     name = title,
                 };
-                dbContext.SaveChanges();
+                _dbContext.SaveChanges();
 
                 // var ParentProduct = Program.globalContext.ProductMeta.Find(productId);
                 // var foundProduct = new Product
@@ -108,7 +108,7 @@ namespace WishList
         ///<summary>
         ///Iterates over database and scrapes every ProductMeta object. 
         ///</summary>
-        public Action Scrape(ProductContext dbContext)
+        public Action Scrape()
         {
             //var services = Program.globalContext; 
             var browser = createBrowser();
@@ -117,11 +117,11 @@ namespace WishList
 
             try
             {
-                var products = dbContext.ProductMeta.ToList();
+                var products = _dbContext.ProductMeta.ToList();
                 foreach (var item in products)
                 {
                     Console.WriteLine($"Object Found:\nName:{item.NameHtmlId}\nPrice:{item.PriceHtmlId}\nURL:{item.ProductUrl}");
-                    getPrice(item.ProductUrl, item.NameHtmlId, item.PriceHtmlId, browser, item.Id, dbContext);
+                    getPrice(item.ProductUrl, item.NameHtmlId, item.PriceHtmlId, browser, item.Id);
                 }
             }
             catch (Exception e)
@@ -129,7 +129,7 @@ namespace WishList
                 Console.WriteLine(e.ToString());
                 browser.Close();
             }
-            dbContext.SaveChanges();
+            _dbContext.SaveChanges();
             browser.Close();
 
             return null;
@@ -141,7 +141,7 @@ namespace WishList
         public Action ScrapeSingle(string url, string priceId, string nameId, int productId, ProductContext dbContext)
         {
             var browser = createBrowser();
-            getPrice(url, nameId, priceId, browser, productId, dbContext);
+            getPrice(url, nameId, priceId, browser, productId);
             //Program.globalContext.SaveChanges(); 
             browser.Close();
             return null;

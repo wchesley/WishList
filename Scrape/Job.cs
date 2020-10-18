@@ -19,8 +19,8 @@ namespace WishList
             using(var scope = services.CreateScope())
             {
                 var dbContext = scope.ServiceProvider.GetRequiredService<ProductContext>(); 
-                var scraper = new scrape();
-                await Task.Run(scraper.Scrape(dbContext));  
+                var scraper = new scrape(dbContext);
+                await Task.Run(scraper.Scrape());  
             }
              
         }
