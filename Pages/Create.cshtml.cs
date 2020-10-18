@@ -73,7 +73,7 @@ namespace WishList.Pages
                 _context.ProductMeta.Add(productMeta);
                 await _context.SaveChangesAsync();
                 scrape scraper = new scrape();
-                scraper.ScrapeSingle(productMeta.ProductUrl, productMeta.PriceHtmlId, productMeta.NameHtmlId, productMeta.Id);
+                scraper.ScrapeSingle(productMeta.ProductUrl, productMeta.PriceHtmlId, productMeta.NameHtmlId, productMeta.Id, _context);
             }
             catch (Exception e)
             {

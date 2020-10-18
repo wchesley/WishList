@@ -8,11 +8,21 @@ namespace WishList
 {
     public class scrapeJob : IJob
     { 
+        private IServiceProvider services {get; }
+        public scrapeJob(IServiceProvider service)
+        {
+            services = service; 
+        }
         async Task IJob.Execute(IJobExecutionContext context)
         { 
             Console.Out.WriteLine("Begin Scheduled Job...");
-            var scraper = new scrape();
-            await Task.Run(scraper.Scrape());   
+            using(var scope = services.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<ProductContext>(); 
+                var scraper = new scrape();
+                await Task.Run(scraper.Scrape(dbContext));  
+            }
+             
         }
     }
 }

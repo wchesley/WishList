@@ -20,7 +20,6 @@ namespace WishList
             var host = CreateHostBuilder(args).Build();
             var scope = host.Services.CreateScope();
             var services = scope.ServiceProvider; 
-            globalContext = services.GetRequiredService<ProductContext>();
             //Seed DB if nothing is there: 
             try 
             {

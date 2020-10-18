@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Microsoft.Extensions.DependencyInjection;
 using OpenQA.Selenium.Chrome;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -9,8 +10,10 @@ namespace WishList
 {
     public class scrape
     {
+
         public scrape()
         {
+
         }
 
         ///<summary>
@@ -30,10 +33,10 @@ namespace WishList
         ///<summary>
         ///Navigates browser to specified url. Grabs Price and Name of Product by either their HTML ID or CSS Class. 
         ///</summary>
-        public void getPrice(string url, string titleId, string priceId, ChromeDriver browser, int productId)
+        public void getPrice(string url, string titleId, string priceId, ChromeDriver browser, int productId, ProductContext dbContext)
         {
-            string Price; 
-            string title; 
+            string Price;
+            string title;
             //the web can be a tricky, unreliable place, best to wrap this in a try/catch block: 
             try
             {
@@ -44,68 +47,81 @@ namespace WishList
                 {
                     Price = browser.FindElementById(priceId).Text;
                 }
-                catch(Exception e1)
+                catch (Exception e1)
                 {
-                   try
-                   {
-                       Console.WriteLine("No element by id, trying css class: \n" + e1.ToString());
-                       Price = browser.FindElementByClassName(priceId).Text;
-                   }
-                   catch(Exception e2)
-                   {
-                    Console.WriteLine("Unable to retreive price by id or css: " + priceId +"\n"+e2.ToString());
-                    Price = "Error";
-                   }
+                    try
+                    {
+                        Console.WriteLine("No element by id, trying css class: \n" + e1.ToString());
+                        Price = browser.FindElementByClassName(priceId).Text;
+                    }
+                    catch (Exception e2)
+                    {
+                        Console.WriteLine("Unable to retreive price by id or css: " + priceId + "\n" + e2.ToString());
+                        Price = "Error";
+                    }
                 }
                 try
                 {
                     title = browser.FindElementById(titleId).Text;
                 }
-                catch(Exception e1)
+                catch (Exception e1)
                 {
-                    try{
-                    Console.WriteLine("No element by id, trying css class: \n" + e1.ToString());
-                    title = browser.FindElementByClassName(titleId).Text;
-                    }
-                    catch(Exception e2)
+                    try
                     {
-                        Console.WriteLine("Unable to retreive title by id or css: " + titleId +"\n"+e2.ToString());
+                        Console.WriteLine("No element by id, trying css class: \n" + e1.ToString());
+                        title = browser.FindElementByClassName(titleId).Text;
+                    }
+                    catch (Exception e2)
+                    {
+                        Console.WriteLine("Unable to retreive title by id or css: " + titleId + "\n" + e2.ToString());
                         title = "Error";
                     }
                 }
-                
+
                 Console.WriteLine($"Object Found:\nName:{title}\nPrice:{Price}\nURL:{url}\nTime:{timeStamp.ToString()}");
-                var ParentProduct = Program.globalContext.ProductMeta.Find(productId);
-                var foundProduct = new Product
+
+                
+                var test = dbContext.ProductMeta.Find(productId);
+                var newProduct = new Product
                 {
                     timeRetreived = timeStamp,
                     price = Price,
                     name = title,
                 };
-                ParentProduct.products.Add(foundProduct);                
+                dbContext.SaveChanges();
+
+                // var ParentProduct = Program.globalContext.ProductMeta.Find(productId);
+                // var foundProduct = new Product
+                // {
+                //     timeRetreived = timeStamp,
+                //     price = Price,
+                //     name = title,
+                // };
+                // ParentProduct.products.Add(foundProduct);                
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
             }
-            Console.WriteLine();
         }
 
         ///<summary>
         ///Iterates over database and scrapes every ProductMeta object. 
         ///</summary>
-        public Action Scrape()
+        public Action Scrape(ProductContext dbContext)
         {
-            var services = Program.globalContext; 
+            //var services = Program.globalContext; 
             var browser = createBrowser();
-            Console.WriteLine("Init Browser..."); 
+            Console.WriteLine("Init Browser...");
+
+
             try
             {
-                var products = services.ProductMeta.ToList();
+                var products = dbContext.ProductMeta.ToList();
                 foreach (var item in products)
                 {
                     Console.WriteLine($"Object Found:\nName:{item.NameHtmlId}\nPrice:{item.PriceHtmlId}\nURL:{item.ProductUrl}");
-                    getPrice(item.ProductUrl, item.NameHtmlId, item.PriceHtmlId, browser, item.Id);
+                    getPrice(item.ProductUrl, item.NameHtmlId, item.PriceHtmlId, browser, item.Id, dbContext);
                 }
             }
             catch (Exception e)
@@ -113,21 +129,22 @@ namespace WishList
                 Console.WriteLine(e.ToString());
                 browser.Close();
             }
-            services.SaveChanges();
+            dbContext.SaveChanges();
             browser.Close();
-            return null; 
+
+            return null;
         }
 
         ///<summary>
         ///Scrapes one single ProductMeta object.
         ///</summary>
-        public Action ScrapeSingle(string url, string priceId, string nameId, int productId)
+        public Action ScrapeSingle(string url, string priceId, string nameId, int productId, ProductContext dbContext)
         {
-            var browser = createBrowser();  
-            getPrice(url, nameId, priceId, browser, productId);
-            Program.globalContext.SaveChanges(); 
-            browser.Close(); 
-            return null; 
+            var browser = createBrowser();
+            getPrice(url, nameId, priceId, browser, productId, dbContext);
+            //Program.globalContext.SaveChanges(); 
+            browser.Close();
+            return null;
         }
     }
 }
